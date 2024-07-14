@@ -1,0 +1,5 @@
+#!/usr/bin/env bash
+# be sure default is in sites-enabled
+
+cp -f /etc/nginx/sites-available/default /etc/nginx/sites-enabled/default
+service nginx restart

@@ -1,0 +1,5 @@
+#!/usr/bin/env bash
+# service (init) must say that nginx is not running - for real
+cp -f /etc/nginx/sites-available/default /etc/nginx/sites-enabled/default
+service nginx restart
+echo '1553' | sudo tee /run/nginx.pid
