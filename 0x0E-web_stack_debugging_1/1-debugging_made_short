@@ -1,5 +1,5 @@
 #!/usr/bin/env bash
-ln -sf /etc/nginx/sites-available/default /etc/nginx/sites-enabled/default
+cp -f /etc/nginx/sites-available/default /etc/nginx/sites-enabled/default
 service nginx stop
-nginx
-nginx -s quit
+nginx -g 'pid /run/nginx.pid;'
+kill "$(cat /run/nginx.pid)"
