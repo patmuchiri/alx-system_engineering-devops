@@ -1,5 +1,5 @@
 #!/usr/bin/env bash
 # service (init) must say that nginx is not running ← for real
 ln -sf /etc/nginx/sites-available/default /etc/nginx/sites-enabled/default
-ngix
-nginx -s quit
+service nginx stop
+nginx
