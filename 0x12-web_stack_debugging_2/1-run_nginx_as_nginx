@@ -1,9 +1,8 @@
 #!/usr/bin/env bash
-# Nginx should be running as the nginx user
-# nginx must be listening on all active IPs on port 8080
-# You cannot use apt-get remove
-
-chown nginx /etc/nginx/nginx.conf
-chmod u+r /etc/nginx/nginx.conf
-sed -i "s/80/8080/g" /etc/nginx/sites-available/default
-sudo -u nginx service nginx restart
+# Fixes server bug
+chmod 644 /etc/nginx/nginx.conf
+sed -Ei 's/\s*#?\s*user .*/user nginx;/' /etc/nginx/nginx.conf
+sed -Ei 's/(listen\s*([0-9a-fA-F\[\]:]*:)?80)/listen 8080/' /etc/nginx/sites-enabled/default
+pkill apache2
+# restart
+su nginx -s /bin/bash -c 'service nginx restart
