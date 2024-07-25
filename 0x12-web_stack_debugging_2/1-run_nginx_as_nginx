@@ -4,4 +4,5 @@ chown nginx:nginx /etc/nginx/nginx.conf
 chmod 644 /etc/nginx/nginx.conf
 sed -i 's/^user .*/user nginx;/' /etc/nginx/nginx.conf
 sed -i 's/listen\s\+80;/listen 8080;/' /etc/nginx/sites-available/default
-sudo -u nginx service nginx restart
+ln -sf /etc/nginx/sites-available/default /etc/nginx/sites-enabled/default
+sudo -u nginx systemctl restart nginx
