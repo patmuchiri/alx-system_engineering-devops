@@ -27,4 +27,8 @@ if__name__ == "__main__":
     completed = [t.get("title") for t in todos if t.get("completed") is True]
 
     # Print the employees's name and the number of complted tasks
+    print("Employee {} is done with tasks({}{}):".format(
+        user.get("name"), len(completed), len(todos)))
+
+    # Print the completed tasks one by one with indentation
     [print("\t{}".format(complete)) for complete in completed]
