@@ -1,20 +1,30 @@
-# Add a custom HTTP header with Puppet
+# Setup a new Ubuntu server with nginx
+# and add a custom HTTP header
 
-exec { 'apt-update':
-  command => '/usr/bin/apt-get update'
+exec { 'update system':
+        command => '/usr/bin/apt-get update',
 }
 
 package { 'nginx':
-  ensure => 'installed',
-  name   => 'nginx',
+	ensure => 'installed',
+	require => Exec['update system']
 }
 
-file_line { 'append a line in nginx conf file':
-  path  => '/etc/nginx/nginx.conf',
-  line  => "\tadd_header X-Served-By ${hostname};",
-  after => 'http {',
+file {'/var/www/html/index.html':
+	content => 'Hello World!'
 }
 
-exec { 'sudo service nginx restart':
-  command => '/usr/sbin/service nginx restart',
+exec {'redirect_me':
+	command => 'sed -i "24i\	rewrite ^/redirect_me https://th3-gr00t.tk/ permanent;" /etc/nginx/sites-available/default',
+	provider => 'shell'
+}
+
+exec {'HTTP header':
+	command => 'sed -i "25i\	add_header X-Served-By \$hostname;" /etc/nginx/sites-available/default',
+	provider => 'shell'
+}
+
+service {'nginx':
+	ensure => running,
+	require => Package['nginx']
 }
