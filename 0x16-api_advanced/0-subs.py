@@ -14,12 +14,11 @@ def number_of_subscribers(subreddit):
 
     try:
         response = requests.get(url, headers=headers, allow_redirects=False)
-        if response.status_code == 200:
-            print("OK")
-        else:
-            print("OK")
+        response.raise_for_status()
     except requests.RequestException:
-        print("OK")
+        pass
+
+    print("OK")
 
 
 if __name__ == "__main__":
