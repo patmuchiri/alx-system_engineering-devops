@@ -1,13 +1,14 @@
 #!/usr/bin/python3
 """
-provides a recursive function to query the Reddit API and return a list containing the titles of all hot articles for a given subreddit.
+provides a recursive function to query the Reddit API and return list
 """
 
 import requests
 
+
 def recurse(subreddit, hot_list=[], after=None):
     """
-    Recursively query the Reddit API and return a list of titles of all hot articles for the given subreddit.
+    Recursively query the Reddit API and return a list of titles.
 
     Args:
         subreddit (str): The name of the subreddit.
@@ -15,11 +16,13 @@ def recurse(subreddit, hot_list=[], after=None):
         after (str): The Reddit API parameter for pagination (optional).
 
     Returns:
-        list: A list of titles of hot articles if the subreddit is valid, None otherwise.
+        list of titles of hot articles if subreddit is valid, None otherwise.
     """
-    # Define the Reddit API endpoint for the given subreddit, including the 'after' parameter for pagination
-    url = f"https://www.reddit.com/r/{subreddit}/hot.json?limit=100&after={after}"
-
+    # Define the Reddit API endpoint for the given subreddit, for pagination
+    url = (
+        f"https://www.reddit.com/r/{subreddit}/hot.json"
+        f"?limit=100&after={after}"
+    )
     # Set a custom User-Agent to avoid Too Many Requests error
     headers = {'User-Agent': 'myRedditBot/1.0'}
 
@@ -28,7 +31,7 @@ def recurse(subreddit, hot_list=[], after=None):
 
     # Check if the response status code is 200 (OK)
     if response.status_code == 200:
-        # Parse the JSON response to extract the titles and the 'after' parameter
+        # Parse the JSON response to extract the titles
         data = response.json()
         posts = data['data']['children']
         after = data['data']['after']
@@ -37,7 +40,7 @@ def recurse(subreddit, hot_list=[], after=None):
             # Accumulate the titles of the current page's hot articles
             hot_list.extend([post['data']['title'] for post in posts])
 
-            # If there's an 'after' parameter, recursively call the function for the next page
+            # If there's an 'after' parameter, recursively call the fxn
             if after is not None:
                 return recurse(subreddit, hot_list, after)
             else:
@@ -46,6 +49,7 @@ def recurse(subreddit, hot_list=[], after=None):
             return hot_list
     else:
         return None
+
 
 if __name__ == "__main__":
     import sys
