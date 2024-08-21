@@ -4,25 +4,17 @@ Script queries subscribers on a given Reddit subreddit.
 """
 
 import requests
-import sys
 
 
 def number_of_subscribers(subreddit):
-    """Print 'OK' if subreddit exists, otherwise print 'OK'."""
+    """Return the total number of subscribers on a given subreddit."""
     url = f"https://www.reddit.com/r/{subreddit}/about.json"
     headers = {"User-Agent": "Mozilla/5.0"}
 
     try:
         response = requests.get(url, headers=headers, allow_redirects=False)
         response.raise_for_status()
+        data = response.json()
+        return data.get('data', {}).get('subscribers', 0)
     except requests.RequestException:
-        pass
-
-    print("OK")
-
-
-if __name__ == "__main__":
-    if len(sys.argv) > 1:
-        number_of_subscribers(sys.argv[1])
-    else:
-        print("Usage: ./0-subs.py subreddit_name")
+        return 0
